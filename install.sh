@@ -51,22 +51,22 @@ echo -e "options\troot=PARTUUID=$(blkid -s PARTUUID -o value ${TARGET}2) rw" >> 
 echo -e "timeout\t3" > /mnt/boot/loader/loader.conf
 echo -e "default\tarch" >> /mnt/boot/loader/loader.conf
 
-arch-chroot /mnt pacman -S iw wpa_supplicant dialog
+arch-chroot /mnt pacman -S iw wpa_supplicant dialog --no-confirm
 
-arch-chroot /mnt pacman -S xorg-server xorg-xinit xorg-drivers
+arch-chroot /mnt pacman -S xorg-server xorg-xinit xorg-drivers --no-confirm
 
-arch-chroot /mnt pacman -S gdm gnome-shell gnome-terminal gnome-control-center gnome-keyring network-manager-applet nautilus xdg-user-dirs
+arch-chroot /mnt pacman -S gdm gnome-shell gnome-terminal gnome-control-center gnome-system-monitor gnome-keyring network-manager-applet nautilus xdg-user-dirs -no-confirm
 
 arch-chroot /mnt systemctl enable gdm NetworkManager
 
 arch-chroot /mnt xdg-user-dirs-update
 
 # manage users
-arch-chroot /mnt passwd
+arch-chroot /mnt echo root:root | chpasswd
 
 arch-chroot /mnt useradd -m -G wheel -s /bin/bash forrest
 
-arch-chroot /mnt passwd forrest
+arch-chroot /mnt echo forrest:password | chpasswd
 
 arch-chroot /mnt sed -i '/NOPASSWD/!s/# %wheel/%wheel/g' /etc/sudoers
 
@@ -74,3 +74,15 @@ arch-chroot /mnt sed -i '/NOPASSWD/!s/# %wheel/%wheel/g' /etc/sudoers
 umount -R /mnt
 
 reboot
+
+
+
+# TODO
+#--------------------------------------------
+# Add antergos keys
+# Install numix-frost-themes
+# Install numix-icon-theme-square
+# Install ttf-google-fonts
+# Install pamac  ?
+# Install b43-firmware
+# Install broadcom-wl
