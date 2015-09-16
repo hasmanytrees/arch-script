@@ -38,7 +38,7 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 
-hwclock --systohc--utc
+hwclock --systohc --utc
 
 # install bootloader
 bootctl install
