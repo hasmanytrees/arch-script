@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# short URL is https://goo.gl/thsP5H
+
 # update the system clock
 timedatectl set-ntp true
 
