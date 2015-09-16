@@ -4,19 +4,19 @@
 timedatectl set-ntp true
 
 # partition the disk
-parted ${TARGET} mklabel gpt
-parted ${TARGET} mkpart ESP fat32 1MiB 513MiB
-parted ${TARGET} set 1 boot on
-parted ${TARGET} mkpart primary ext4 513MiB 100%
+parted {{TARGET}} mklabel gpt
+parted {{TARGET}} mkpart ESP fat32 1MiB 513MiB
+parted {{TARGET}} set 1 boot on
+parted {{TARGET}} mkpart primary ext4 513MiB 100%
 
 # format the partitions
-mkfs.fat -F32 ${TARGET}1 -L boot_hmt
-mkfs.ext4 ${TARGET}2 -L root_hmt
+mkfs.fat -F32 {{TARGET}}1 -n boot_hmt
+mkfs.ext4 {{TARGET}}2 -n root_hmt
 
 # mount the partitions
-mount ${TARGET}2 /mnt
+mount {{TARGET}}2 /mnt
 mkdir -p /mnt/boot
-mount ${TARGET}1 /mnt/boot
+mount {{TARGET}}1 /mnt/boot
 
 # select the mirrors
 
