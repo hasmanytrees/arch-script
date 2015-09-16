@@ -46,7 +46,7 @@ bootctl install
 echo -e "title\tArch Linux" > /boot/loader/entries/arch.conf
 echo -e "linux\t/vmlinuz-linux" >> /boot/loader/entries/arch.conf
 echo -e "initrd\t/initramfs-linux.img" >> /boot/loader/entries/arch.conf
-echo -e "options\troot=Label=boot_hmt rw" >> /boot/loader/entries/arch.conf
+echo -e "options\troot=Label=root_hmt rw" >> /boot/loader/entries/arch.conf
 
 echo -e "timeout\t3" > /boot/loader/loader.conf
 echo -e "default\tarch" >> /boot/loader/loader.conf
