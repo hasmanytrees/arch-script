@@ -204,15 +204,3 @@ if [ $1 ]; then
 else
     echo "No option entered (to begin installation enter the option: os)."
 fi
-
-
-###################################################################################################
-# TODO
-#
-# Add antergos keys
-# Install numix-frost-themes
-# Install numix-icon-theme-square
-# Install ttf-google-fonts
-# Install pamac  ?
-# Install b43-firmware
-# Install broadcom-wl
