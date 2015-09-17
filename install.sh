@@ -99,7 +99,7 @@ function os() {
 
     format_mount_partitions
 
-    pacstrap /mnt base base-devel
+    pacstrap /mnt base base-devel wget
 
     genfstab -U /mnt > /mnt/etc/fstab
 
