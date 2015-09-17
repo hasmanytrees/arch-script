@@ -104,11 +104,11 @@ function update_mirrors() {
 function os() {
     timedatectl set-ntp true
 
-    partition_disk()
+    partition_disk
 
-    format_mount_partitions()
+    format_mount_partitions
 
-    update_mirrors()
+    update_mirrors
 
     pacstrap /mnt base base-devel
 
@@ -178,11 +178,11 @@ manage_users() {
 function os2() {
     echo $hostname > /etc/hostname
 
-    set_locale_timezone()
+    set_locale_timezone
 
-    install_bootloader()
+    install_bootloader
 
-    install_antergos_keyring()
+    install_antergos_keyring
 
     pacman -S --needed --noconfirm $packages
 
@@ -190,7 +190,7 @@ function os2() {
 
     xdg-user-dirs-update
 
-    manage_users()
+    manage_users
 
     # return to os
     exit
