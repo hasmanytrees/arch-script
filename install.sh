@@ -145,7 +145,7 @@ function install_antergos_keyring() {
     echo -e "[antergos]" >> /etc/pacman.conf
     echo -e "SigLevel = PackageRequired" >> /etc/pacman.conf
     echo -e "Usage = All" >> /etc/pacman.conf
-    echo -e "Server = http://mirrors.antergos.com/$repo/$arch" >> /etc/pacman.conf
+    echo -e "Server = http://mirrors.antergos.com/\$repo/\$arch" >> /etc/pacman.conf
 
     pacman -Syy
 
