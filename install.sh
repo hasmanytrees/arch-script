@@ -92,23 +92,12 @@ function format_mount_partitions() {
 }
 
 
-function update_mirrors() {
-    pacman -S reflector
-
-    cp -vf /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-
-    reflector --verbose --country 'United States' -l 10 -p http --sort rate --save /etc/pacman.d/mirrorlist
-}
-
-
 function os() {
     timedatectl set-ntp true
 
     partition_disk
 
     format_mount_partitions
-
-    update_mirrors
 
     pacstrap /mnt base base-devel
 
@@ -164,7 +153,16 @@ function install_antergos_keyring() {
 }
 
 
-manage_users() {
+function update_mirrors() {
+    pacman -S reflector
+
+    cp -vf /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+
+    reflector --verbose --country 'United States' -l 10 -p http --sort rate --save /etc/pacman.d/mirrorlist
+}
+
+
+function manage_users() {
     echo root:$root_password | chpasswd
 
     useradd -m -G wheel -s /bin/bash $admin_username
@@ -183,6 +181,8 @@ function os2() {
     install_bootloader
 
     install_antergos_keyring
+    
+    update_mirrors
 
     pacman -S --needed --noconfirm $packages
 
