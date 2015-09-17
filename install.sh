@@ -128,7 +128,7 @@ function install_bootloader() {
     echo -e "title\tArch Linux" > /boot/loader/entries/arch.conf
     echo -e "linux\t/vmlinuz-linux" >> /boot/loader/entries/arch.conf
     echo -e "initrd\t/initramfs-linux.img" >> /boot/loader/entries/arch.conf
-    echo -e "options\troot=PARTUUID=$(blkid -s PARTUUID -o value ${TARGET}2) rw" >> /boot/loader/entries/arch.conf
+    echo -e "options\troot=PARTUUID=$(blkid -s PARTUUID -o value $root_diskpart) rw" >> /boot/loader/entries/arch.conf
 
     echo -e "timeout\t3" > /boot/loader/loader.conf
     echo -e "default\tarch" >> /boot/loader/loader.conf
