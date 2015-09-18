@@ -49,7 +49,7 @@ packages+=" antergos/numix-icon-theme"
 packages+=" antergos/numix-icon-theme-square"
 packages+=" antergos/ttf-google-fonts"
 packages+=" antergos/pamac"
-#packages+=" antergos/gnome-shell-extension-dash-to-dock"
+packages+=" antergos/gnome-shell-extension-dash-to-dock"
 #packages+=" antergos/b43-firmware"
 #packages+=" antergos/broadcom-wl"
 
@@ -181,7 +181,7 @@ function os2() {
     install_bootloader
 
     install_antergos_keyring
-    
+
     update_mirrors
 
     pacman -S --needed --noconfirm $packages
