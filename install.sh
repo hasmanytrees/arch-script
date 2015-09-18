@@ -45,6 +45,8 @@ packages+=" unzip"
 packages+=" unrar"
 packages+=" nodejs"
 packages+=" npm"
+packages+=" openssh"
+packages+=" xclip"
 
 packages+=" antergos/numix-frost-themes"
 packages+=" antergos/numix-icon-theme"
