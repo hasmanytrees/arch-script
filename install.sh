@@ -43,6 +43,8 @@ packages+=" gzip"
 packages+=" tar"
 packages+=" unzip"
 packages+=" unrar"
+packages+=" nodejs"
+packages+=" npm"
 
 packages+=" antergos/numix-frost-themes"
 packages+=" antergos/numix-icon-theme"
