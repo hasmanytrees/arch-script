@@ -4,7 +4,7 @@
 # short URL is https://goo.gl/thsP5H
 
 
-target_disk=/dev/sdc
+target_disk=/dev/sdx
 boot_diskpart=${target_disk}1
 root_diskpart=${target_disk}2
 
@@ -20,7 +20,7 @@ admin_password=password
 
 
 packages+=" iw"
-packages+=" wpa_supplicant"
+packages+=" wpa_actiond"
 packages+=" dialog"
 packages+=" xorg-server"
 packages+=" xorg-xinit"
@@ -31,7 +31,7 @@ packages+=" gdm"
 packages+=" gnome-shell"
 packages+=" gnome-shell-extensions"
 packages+=" gnome-keyring"
-packages+=" network-manager-applet"
+#packages+=" network-manager-applet"
 packages+=" gnome-control-center"
 packages+=" gnome-system-monitor"
 packages+=" gnome-tweak-tool"
@@ -190,7 +190,7 @@ function os2() {
 
     pacman -S --needed --noconfirm $packages
 
-    systemctl enable gdm NetworkManager
+    systemctl enable gdm netctl-auto@$(iw dev | grep Interface | awk '{print $2}')
 
     xdg-user-dirs-update
 
