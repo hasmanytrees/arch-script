@@ -65,7 +65,8 @@ setup_apps() {
 
   su $admin_username -c "/install.sh setup_git"
 
-  su $admin_username -c "/install.sh setup_gtk"
+  # TODO: Doesn't seem to work during install
+  #su $admin_username -c "/install.sh setup_gtk"
 }
 
 
@@ -86,8 +87,9 @@ setup_git() {
   mkdir ~/.ssh
   ssh-keygen -t rsa -b 4096 -C "$admin_git_email" -N "" -f ~/.ssh/id_rsa
 
-  eval "$(ssh-agent-s)"
-  ssh-add ~/.ssh/id_rsa
+  # TODO: Doesn't seem to work during install
+  #eval "$(ssh-agent-s)"
+  #ssh-add ~/.ssh/id_rsa
 }
 
 
@@ -201,7 +203,7 @@ function add_antergos_repository() {
 function add_infinality_repository() {
   echo -e "" >> /etc/pacman.conf
   echo -e "[infinality-bundle]" >> /etc/pacman.conf
-  echo -e "Server = http://bohoomil.com/repo/$arch" >> /etc/pacman.conf
+  echo -e "Server = http://bohoomil.com/repo/\$arch" >> /etc/pacman.conf
 
   # hack to get the key recv to work
   dirmngr < /dev/null
@@ -254,7 +256,8 @@ function os2() {
 
   pacman -S --needed --noconfirm $packages
 
-  yaourt -S --needed --noconfirm $aur_packages
+  # TODO: Can't install aur packages as root
+  #yaourt -S --needed --noconfirm $aur_packages
 
   systemctl enable gdm netctl-auto@$(iw dev | grep Interface | awk '{print $2}')
 
