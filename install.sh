@@ -46,6 +46,8 @@ packages+=" unrar"
 packages+=" nodejs"
 packages+=" npm"
 packages+=" openssh"
+packages+=" chromium"
+packages+=" chromium-pepper-flash"
 
 packages+=" antergos/numix-frost-themes"
 packages+=" antergos/numix-icon-theme-square"
