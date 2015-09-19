@@ -58,13 +58,23 @@ aur_packages+=" atom-editor-bin"
 
 
 setup_apps() {
-  setup_npm
+  su $admin_username -c "./install.sh setup_npm"
 }
 
 
 setup_npm() {
   # fix npm permissions
+  mkdir -p ~/.npm/.global
+
+  npm config set prefix=~/.npm/.global
+
+  echo -e "export PATH=\$HOME/.npm/.global/bin:\$PATH" >> ~/.bashrc
 }
+
+
+#setup_git() {
+
+#}
 
 ###################################################################################################
 
@@ -116,6 +126,7 @@ function os() {
   genfstab -U /mnt > /mnt/etc/fstab
 
   cp -f $installer /mnt
+
   arch-chroot /mnt /bin/bash -c "bash /$(basename $0) os2"
 
   umount -R /mnt
@@ -225,6 +236,8 @@ function os2() {
   xdg-user-dirs-update
 
   manage_users
+
+  setup_apps
 
   # return to os
   exit
