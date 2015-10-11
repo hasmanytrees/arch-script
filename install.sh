@@ -195,7 +195,7 @@ function os2() {
 
   pacman -S --needed --noconfirm $packages
 
-  systemctl enable gdm netctl-auto@$(iw dev | grep Interface | awk '{print $2}')
+  systemctl enable netctl-auto@$(iw dev | grep Interface | awk '{print $2}')
 
   manage_users
 
