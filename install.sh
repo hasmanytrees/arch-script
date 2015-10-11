@@ -49,17 +49,21 @@ installer=$(dirname $0)/$(basename $0)
 
 
 function partition_disk() {
-  fdisk $target_disk <<-EOF
-g
+  gdisk $target_disk <<-EOF
+o
+Y
 n
 
 
 +512M
+EF00
 n
 
 
 
+
 w
+Y
 EOF
 
   pvcreate $root_diskpart
