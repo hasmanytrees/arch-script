@@ -25,29 +25,10 @@ packages+=" xorg-xinit"
 packages+=" xorg-drivers"
 packages+=" mesa"
 packages+=" mesa-vdpau"
-packages+=" gdm"
-packages+=" gnome-shell"
-packages+=" gnome-shell-extensions"
-packages+=" gnome-keyring"
-packages+=" gnome-control-center"
-packages+=" gnome-system-monitor"
-packages+=" gnome-tweak-tool"
-packages+=" gnome-terminal"
-packages+=" nautilus"
-packages+=" xdg-user-dirs-gtk"
-packages+=" file-roller"
 packages+=" gzip"
 packages+=" tar"
 packages+=" unzip"
 packages+=" unrar"
-packages+=" chromium"
-packages+=" chromium-pepper-flash"
-
-packages+=" antergos/numix-frost-themes"
-packages+=" antergos/numix-icon-theme-square"
-packages+=" antergos/pamac"
-packages+=" antergos/gnome-shell-extension-dash-to-dock"
-
 packages+=" infinality-bundle"
 
 ###################################################################################################
@@ -68,21 +49,42 @@ installer=$(dirname $0)/$(basename $0)
 
 
 function partition_disk() {
-  parted_commands+=" mklabel gpt"
-  parted_commands+=" mkpart ESP fat32 1MiB 513MiB"
-  parted_commands+=" set 1 boot on"
-  parted_commands+=" mkpart primary ext4 513MiB 100%"
+  fdisk $target_disk <<-EOF
+  g
+  n
 
-  parted --script $target_disk $parted_commands
+
+  +512M
+  n
+
+
+
+  w
+  EOF
+
+  pvcreate $root_diskpart
+
+  pvdisplay
+
+  vgcreate vg0 $root_diskpart
+
+  vgdisplay
+
+  lvcreate -L 8G vg0 -n swap
+
+  lvcreate -l +100%FREE vg0 -n root
+
+  lvdisplay
 }
 
 
 function format_mount_partitions() {
-  mkfs.ext4 $root_diskpart
-  mkfs.fat -F32 $boot_diskpart
+  mkswap /dev/mapper/vg0-swap
+  mkfs.vfat -n efi $boot_diskpart
+  mkfs.ext4 -L root /dev/mapper/vg0-root
 
-  mount $root_diskpart /mnt
-
+  swapon /dev/mapper/vg0-swap
+  mount /dev/mapper/vg0-root /mnt
   mkdir -p /mnt/boot
   mount $boot_diskpart /mnt/boot
 }
@@ -131,21 +133,6 @@ function install_bootloader() {
   echo -e "default\tarch" >> /boot/loader/loader.conf
 }
 
-function add_antergos_repository() {
-  echo -e "[antergos]" >> /etc/pacman.conf
-  echo -e "SigLevel = PackageRequired" >> /etc/pacman.conf
-  echo -e "Usage = All" >> /etc/pacman.conf
-  echo -e "Server = http://mirrors.antergos.com/\$repo/\$arch" >> /etc/pacman.conf
-
-  wget http://mirrors.antergos.com/antergos/x86_64/antergos-keyring-20150806-1-any.pkg.tar.xz
-
-  pacman -U antergos-keyring-20150806-1-any.pkg.tar.xz
-
-  pacman-key --init archlinux antergos && pacman-key --populate archlinux antergos
-
-  rm antergos-keyring-20150806-1-any.pkg.tar.xz
-}
-
 
 function add_infinality_repository() {
   echo -e "" >> /etc/pacman.conf
@@ -162,8 +149,6 @@ function add_infinality_repository() {
 
 
 function add_third_party_repositories() {
-  add_antergos_repository
-
   add_infinality_repository
 
   pacman -Sy
@@ -195,6 +180,9 @@ function os2() {
 
   set_locale_timezone
 
+  sed -i.bak -r 's/^HOOKS=(.*)block(.*)/HOOKS=\1block lvm2\2/g' /etc/mkinitcpio.conf
+  mkinitcpio -p linux
+
   install_bootloader
 
   add_third_party_repositories
@@ -205,11 +193,7 @@ function os2() {
 
   systemctl enable gdm netctl-auto@$(iw dev | grep Interface | awk '{print $2}')
 
-  xdg-user-dirs-update
-
   manage_users
-
-  setup_apps
 
   # return to os
   exit
