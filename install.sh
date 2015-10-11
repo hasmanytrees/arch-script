@@ -80,8 +80,8 @@ EOF
 
 function format_mount_partitions() {
   mkswap /dev/mapper/vg0-swap
-  mkfs.vfat -n efi $boot_diskpart
-  mkfs.ext4 -L root /dev/mapper/vg0-root
+  mkfs.vfat -n EFI $boot_diskpart
+  mkfs.ext4 -L ROOT /dev/mapper/vg0-root
 
   swapon /dev/mapper/vg0-swap
   mount /dev/mapper/vg0-root /mnt
